@@ -1,0 +1,189 @@
+Day 2
+
+String functions
+
+Number Functions / Match Functions
+
+Aggregate functions
+
+min
+max
+avg
+count
+sum
+
+
+create table employees
+(
+	id number(3) primary key,
+	name varchar2(30) not null,
+	age number(3) not null check(age>12),
+	join_date date not null,
+	city varchar2(30) not null,
+	department varchar2(20) not null,
+	salary number(10) not null check(salary>0),
+	created_at date default sysdate
+);
+
+create sequence emp_seq
+start with 1
+increment by 1;
+
+insert into employees(id,name,age,join_date,city,department,salary) values(emp_seq.nextval,'Pranali',22,'25-Apr-2023','Mumbai','IT',32000);
+
+
+
+
+clauses 
+
+FROM
+WHERE
+ORDER BY
+DISTINCT
+
+GROUP BY to work with aggregate func
+
+having
+
+display all the cities from where we have 2 employees
+
+select [column/*]
+from table/view
+where condition
+group by
+having
+order by
+
+
+bookings
+
+dead line 1:20
+
+id
+name
+room no
+check in date
+check out date
+discount
+total price for 1 day
+country
+created_at
+
+fill 6 to 8 data
+
+
+1. Fetch the count of people from different countries
+
+--select count(*),country from bookings group by country;
+
+2. Display the data from which country we have maximum customers
+
+--select count(*),country from bookings group by country order by count(*) desc offset 0 rows fetch next 1 rows only;
+--select count(*),country from bookings group by country order by count(*) desc fetch next 2 rows only;
+
+3. Display all the customer whose checkin month is june
+
+--select * from bookings where extract(month from checkin_date)=2;
+
+4. Display all the customers who are living for more than four days
+
+--select * from bookings where checkout_date-checkin_date > 4
+
+5. Display the final amount to be paid by customer with their names
+
+--select (checkout_date-checkin_date)*total_price - ((checkout_date-checkin_date)*total_price)*10/100  from bookings;
+
+
+ddl
+create,drop,alter
+
+dml
+insert,update,delete,truncate
+
+dql
+select
+
+tcl
+rollback, commit, savepoint
+
+clauses
+where
+from
+order by
+group by
+having
+distinct
+
+constraints
+
+
+
+1. People will register (name,email,contact,city)
+2.Login
+3. See the properties listed on website (property have a type)
+4. add a property to cart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+create table bookings(
+	id number(10) primary key,
+	name varchar2(20) not null,
+	room_no number(5) not null,
+	checkin_date date not null unique,
+	checkout_date date not null unique,
+	total_cost number(9) not null,
+	country varchar2(30) not null,
+	discounts number(3) not null,
+	created_at date default sysdate
+);
+
+create sequence booking_seq
+start with 1
+increment by 1;
+
+insert into bookings(id,name,room_no,checkin_date,checkout_date,total_cost,country,discounts)values
+  (booking_seq.nextval,'pratik',201,'11-Oct-2023','13-Oct-2023',7000,'India',15);
+
+insert into bookings(id,name,room_no,checkin_date,checkout_date,total_cost,country,discounts)values
+  (booking_seq.nextval,'raj',210,'11-Jun-2023','15-Jun-2023',5000,'India',30);
+
+insert into bookings(id,name,room_no,checkin_date,checkout_date,total_cost,country,discounts)values
+  (booking_seq.nextval,'jay',301,'12-Nov-2023','17-Nov-2023',6000,'USA',25);
+
+insert into bookings(id,name,room_no,checkin_date,checkout_date,total_cost,country,discounts)values
+  (booking_seq.nextval,'rohit',111,'23-Sep-2023','29-Sep-2023',4500,'UK',20);
+
+insert into bookings(id,name,room_no,checkin_date,checkout_date,total_cost,country,discounts)values
+  (booking_seq.nextval,'viraj',250,'12-Jun-2023','15-Jun-2023',8000,'China',30);
+
+insert into bookings(id,name,room_no,checkin_date,checkout_date,total_cost,country,discounts)values
+  (booking_seq.nextval,'lokesh',200,'23-Jun-2023','29-Jun-2023',10000,'UK',20);
+
+
+queries performed:-
+
+1. select country,count(*) from bookings group by country;
+
+2.select country,count(*) from bookings group by country order by count(*) desc;
+
+3.select * from bookings where extract(month from checkin_date)=6;
+
+4.select * from bookings where checkout_date - checkin_date > 4;
+
+5.select (checkout_date-checkin_date)*total_cost - ((checkout_date-checkin_date)*total_cost)*discounts/100,name from bookings;

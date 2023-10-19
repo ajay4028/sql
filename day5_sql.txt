@@ -1,0 +1,160 @@
+declare 
+
+cursor c_users is select name,username,password from users;
+v_name users.name%type;
+v_username users.username%type;
+v_password users.password%type;
+
+begin
+
+open c_users;
+
+loop
+	fetch c_users into v_name,v_username,v_password;
+	exit when c_users%notfound = true;
+
+	 dbms_output.put_line(v_name||' '||v_username||' '||v_password);
+
+end loop;
+
+close c_users;
+
+end;
+/
+
+declare
+
+users_r users%rowtype;
+
+begin
+
+select * into users_r from users where id = 3;
+
+dbms_output.put_line(users_r.name||' '||users_r.username||' '||users_r.password);
+
+
+end;
+/
+
+
+
+# creation of procedure
+----------------------------
+create or replace procedure getsqr(n in number,r in number)
+as
+begin
+
+dbms_output.put_line(n*n);
+dbms_output.put_line(r*r*r);
+
+end;
+/
+
+create or replace procedure getemp(eid in number,empn out employees.name%type,sal out employees.salary%type)
+as 
+begin 
+
+select name,salary into empn,sal from employees where id = eid;
+end;
+
+declare 
+
+eid employees.id%type := &eid;
+en employees.name%type;
+es employees.salary%type;
+
+begin
+
+getemp(eid,en,es);
+
+dbms_output.put_line(en);
+dbms_output.put_line(es);
+end;
+/
+
+
+
+
+#functions:-
+------------------------------------------------------------------------
+
+1.program
+-------------
+create or replace function getdata(ename in varchar2) return employees.email%type
+is 
+e_email employees.email%type;
+
+begin
+
+select email into e_email from employees where name = ename;
+
+return e_email; 
+
+end;
+/
+
+declare 
+
+a employees.email%type;
+
+begin
+
+a :=getdata('Ajay');
+
+dbms_output.put_line(a);
+
+end;
+/
+
+
+2.
+----------------------------------------------------------
+create or replace function getdataf(ename in varchar2) return employees.salary%type
+is 
+e_sal employees.salary%type;
+
+begin
+
+select salary into e_sal from employees where name = ename;
+
+return e_sal/100*10; 
+
+end;
+/
+
+declare 
+
+a employees.email%type;
+
+begin
+
+a :=getdataf('Ajay');
+
+dbms_output.put_line(a);
+
+end;
+/
+
+
+# Trigger
+-------------------
+1.
+---
+create or replace trigger displayUpdateMessage
+before update on employees
+for each row
+
+begin
+
+dbms_output.put_line(:OLD.name||'-'||:old.city ||'-'||:old.salary); 
+dbms_output.put_line(:new.name||'-'||:new.city ||'-'||:new.salary); 
+dbms_output.put_line('someone updated employees table '); 
+
+dbms_output.put_line('Difference is :- ' ||(:old.salary-:new.salary)); 
+
+end;
+/
+
+query:-
+-------------
+update employees set salary=15000 where id=2;

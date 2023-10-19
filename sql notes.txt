@@ -1,0 +1,745 @@
+String functions
+
+Number Functions / Match Functions
+
+Aggregate functions
+
+min
+max
+avg
+count
+sum
+
+
+create table employees
+(
+	id number(3) primary key,
+	name varchar2(30) not null,
+	age number(3) not null check(age>12),
+	join_date date not null,
+	city varchar2(30) not null,
+	department varchar2(20) not null,
+	salary number(10) not null check(salary>0),
+	created_at date default sysdate
+);
+
+create sequence emp_seq
+start with 1
+increment by 1;
+
+insert into employees(id,name,age,join_date,city,department,salary) values(emp_seq.nextval,'Pranali',22,'25-Apr-2023','Mumbai','IT',32000);
+
+
+
+
+clauses 
+
+FROM
+WHERE
+ORDER BY
+DISTINCT
+
+GROUP BY to work with aggregate func
+
+having
+
+display all the cities from where we have 2 employees
+
+select [column/*]
+from table/view
+where condition
+group by
+having
+order by
+
+
+bookings
+
+dead line 1:20
+
+id
+name
+room no
+check in date
+check out date
+discount
+total price for 1 day
+country
+created_at
+
+fill 6 to 8 data
+
+
+1. Fetch the count of people from different countries
+
+--select count(*),country from bookings group by country;
+
+2. Display the data from which country we have maximum customers
+
+--select count(*),country from bookings group by country order by count(*) desc offset 0 rows fetch next 1 rows only;
+--select count(*),country from bookings group by country order by count(*) desc fetch next 2 rows only;
+
+3. Display all the customer whose checkin month is june
+
+--select * from bookings where extract(month from checkin_date)=2;
+
+4. Display all the customers who are living for more than four days
+
+--select * from bookings where checkout_date-checkin_date > 4
+
+5. Display the final amount to be paid by customer with their names
+
+--select (checkout_date-checkin_date)*total_price - ((checkout_date-checkin_date)*total_price)*10/100  from bookings;
+
+
+ddl
+create,drop,alter
+
+dml
+insert,update,delete,truncate
+
+dql
+select
+
+tcl
+rollback, commit, savepoint
+
+clauses
+where
+from
+order by
+group by
+having
+distinct
+
+constraints
+
+
+
+1. People will register (name,email,contact,city)
+2.Login
+3. See the properties listed on website (property have a type)
+4. add a property to cart
+
+
+
+create table departments(
+id number(10) primary key,
+name varchar2(30) not null unique,
+created_at date default sysdate
+);
+
+create sequence emp_seq
+start with 1
+increment by 1;
+
+insert into departments(id,name) values(dept_seq.nextval,'HR');
+
+
+create table employees(
+id number(10) primary key,
+name varchar2(30) not null,
+city varchar2(30) not null,
+email varchar2(30) not null unique,
+salary number(10) not null,
+did number(10),
+foreign key(did) references departments(id),
+created_at date default sysdate
+);
+
+
+insert into employees(id,name,city,email,salary,did)values(emp_seq.nextval,'Shrutika','Pune','shrutika@gmail.com',25000,null);
+
+
+create table bank_details(
+id number(10) primary key,
+account number(10) not null unique,
+ifsc varchar2(20) not null,
+branch varchar2(20) not null,
+eid number(10),
+foreign key(eid) references employees(id),
+created_at date default sysdate
+);
+
+insert into bank_details(id,account,ifsc,branch,eid) values(bank_seq.nextval,8921321,'hdfc001','Seawoods',6);
+
+
+create sequence bank_seq
+start with 1
+increment by 1;
+
+
+Half the job
+
+fetch data from mmultiple tables at one time
+
+Joins
+
+Inner join - fetch all the records which satisfy the given relation
+
+select columns/* from 
+[table1/left table] inner join [table2/right table]
+on table1.column = tbale2.column
+
+select d.name,e.name,email,city,salary from 
+departments d inner join employees e
+on d.id = e.did;
+
+
+Outer join
+left outer - all data from left table but only matching data from right table
+right outer
+full outer
+
+select [*/columns] from 
+table1/Ltable left outer join table2/righttable
+on relationship 
+
+select d.id,d.name,e.id,e.name from
+departments d full outer join employees e
+on d.id=e.did;
+
+
+
+Equi Join
+
+select [*/columns] from
+table1,table2
+where table1.column = table2.column
+
+
+select d.id,d.name,e.id,e.name from 
+departments d,employees e
+where d.id=e.did;
+
+Cross Join
+
+select d.id,d.name,e.id,e.name from
+departments d cross join employees e;
+
+
+
+Data from 3 tables 
+
+mention department name,employee name,salary,account number and branch for all employees;
+
+
+select d.name,e.name,e.salary,bd.account,bd.branch from
+departments d,employees e,bank_details bd
+where d.id=e.did
+and e.id=bd.eid
+order by e.salary desc;
+
+
+
+select d.name,e.name,e.salary,bd.account,bd.branch from
+departments d inner join employees e
+on d.id=e.did
+inner join bank_details bd
+on e.id=bd.eid
+
+
+create sequence instusers_seq
+start with 1
+increment by 1;
+
+create table users(
+id number(10) primary key,
+name varchar2(20) not null,
+username varchar2(20) not null unique,
+password varchar2(20) not null,
+type varchar2(20) default 'public',
+created_at date default sysdate 
+);
+
+insert into users(id,name,username,password) values(instusers_seq.nextval,'tanvi','tan','tanvi123');
+
+create sequence posts_seq
+start with 1
+increment by 1;
+
+create table posts(
+id number(10) primary key,
+caption varchar2(20) not null,
+media varchar2(20) not null ,
+type varchar2(20) default 'image',
+usid number(10),
+foreign key(usid) references users(id),
+created_at date default sysdate 
+);
+
+
+insert into posts(id,caption,media,type,usid) values(posts_seq.nextval,'Mountains','Some Video','reel',5);
+
+create sequence comment_seq
+start with 1
+increment by 1
+
+create table comments(
+id number(10) primary key,
+usid number(10),
+foreign key(usid) references users(id),
+pid number(10),
+foreign key(pid) references posts(id),
+message
+created_at date default sysdate 
+);
+
+insert into comments(id,usid,pid,message) values(comment_seq.nextval,3,2,'Good Family');
+
+
+
+fetch all the posts for the user having username kkul
+
+select u.id as user_id,u.username,p.id as post_id,p.caption,p.media from 
+users u,posts p
+where u.id=p.usid
+and u.username='kkul';
+
+
+
+fetch all the comments for all the posts with the commenters username
+
+select count(*) from
+posts p,comments c,users u
+where p.id=c.pid
+and u.id=c.usid;
+
+
+
+fetch the post and the comments which is posted by saurabh
+
+
+.figure out the tables
+.figure out the proper relationship
+.figure out the conditions
+
+
+
+.fetch all the comments done by [rahul]
+
+select * from 
+users u,comments c
+where u.id=c.usid
+and u.name='rahul'
+
+.fetch all the comments for posts done by [saurabh]
+
+select * from
+users u,posts p,comments c
+where u.id=p.usid
+and p.id=c.pid
+and u.username='kkul'
+
+
+
+.fetch all the posts on which a user has commented
+
+select * from
+users u,posts p,comments c
+where u.id=c.usid
+and p.id=c.pid
+and u.name='pranali'
+
+
+
+
+
+
+fetch the count of all the users who posted on 12th october 2023
+
+select count(*) from
+users u,posts p
+where u.id=p.usid
+and p.created_at='12-oct-2023'
+
+
+sub queries 
+
+fetch all the posts for a particular user [kkul]
+
+its is alot slower as compared to joins
+
+select * from posts where usid in(select id from users where type = 'public')
+
+
+
+select * from 
+posts p,users u
+where u.id=p.usid
+and u.username = 'kkul'
+
+
+
+Assignments questions day 3 
+
+1. Fetch the comment and commenter of a single post posted by ketan.
+	
+select u.name,p.caption,c.message from 
+users u,posts p,comments c
+where u.id=c.usid
+and p.id=c.pid
+and p.id=(
+select p1.id from 
+users u1,posts p1 
+where u1.id=p1.usid
+and u1.username='kkul'
+offset 1 rows fetch next 1 rows only	
+);
+
+	
+
+2. Fetch the commenters of all the posts which were posted on 24th feb 2023.
+
+select u.name,p.caption from
+users u,posts p,comments c
+where p.id=c.pid
+and u.id=c.usid
+and trunc(p.created_at)='';
+
+
+3. Fetch the users whose account was created on 24th october 2023
+
+select * from users where trunc(created_at)='';
+
+4. Fetch the caption of the posts posted by rahul.
+
+select * from 
+users u,posts p
+where u.id=p.usid
+and u.name='rahul'
+
+
+5. fetch all the posts where ketan has commented on his own post. 
+
+select p.caption,c.message,p.usid,c.usid from 
+users u,posts p,comments c
+where u.id=p.usid
+and p.id=c.pid
+and p.usid=c.usid
+and u.name='ketan';
+
+
+
+
+set operators 
+
+combining or working on resultset 
+
+union - combine 2 result sets and remove duplicates
+union all - combine 2 result sets but keep the duplicates
+intersect - only give the common records from both resultsets with no duplicates
+minus - uncommon records from first resultset
+
+
+select name,city from employees where city = 'Pune'
+union
+select name,city from employees where salary > 30000;
+
+select * from employees where city = 'Pune'
+union all
+select * from employees where salary > 30000;
+
+select * from employees where city = 'Pune'
+minus
+select * from employees where salary > 30000;
+
+select * from employees where salary > 30000
+minus
+select * from employees where city = 'Pune';
+
+
+
+
+
+fetch caption and username either for all the posts done by ketan 
+or all the comments done by saurabh
+
+select p.caption,u.username
+from users u,posts p
+where u.id=p.usid
+and u.username='ketan' 
+union
+select p.caption,u.username
+from users u,posts p,comments
+where p.id=c.pid
+and u.id=c.usid
+and u.username='saurabh'
+
+
+
+
+
+PL /  SQL 
+
+declare
+	
+	your variables / constants
+
+begin
+
+	your code;
+
+end;
+/
+
+
+basic program
+
+declare
+
+num1 number(2) := &num1;
+num2 number(2) := &num2;
+name varchar2(20) := '&name';
+result number(2);
+
+
+begin 
+
+result := num1+num2;
+
+dbms_output.put_line('the name is '||name);
+dbms_output.put_line('the result is '||result);
+
+end;
+/
+
+
+select data from table and store in variables
+
+declare
+vname employees.name%type;
+vcity employees.city%type;
+vemail employees.email%type;
+vsal employees.salary%type;
+
+begin
+	
+select name,city,email,salary into vname,vcity,vemail,vsal from employees where id = 2;
+
+dbms_output.put_line('the name is '||vname);
+dbms_output.put_line('the city is '||vcity);
+dbms_output.put_line('the email is '||vemail);
+dbms_output.put_line('the salary is '||vsal*12);
+
+end;
+/
+
+
+
+CONDITIONAL STATEMENTS
+
+1.if then
+2.if then else
+3.if then elsif then / multiple if
+4.case statements
+
+
+declare
+num number(2):=18;
+begin 
+
+if (num>20) then
+	dbms_output.put_line('Greater than 20');
+else
+	dbms_output.put_line('less than 20');
+end if;
+
+end;
+/
+
+
+logical
+
+and or 
+
+
+
+multiple if example
+
+declare
+percentage number(2) := 32;
+grade varchar2(2);
+begin 
+
+if (percentage>=70 and percentage<80) then
+	grade := 'A';
+
+elsif (percentage>=80 and percentage <=100) then 
+	grade := 'O';
+
+elsif (percentage>=55 and percentage<70) then
+	grade := 'B';
+
+elsif (percentage>=40 and percentage<55) then
+	grade := 'C';
+else 
+	grade := 'F';
+
+end if;
+
+
+case 
+	
+	when grade = 'O' then dbms_output.put_line('Congrats!!! Amazing');
+	when grade = 'A' then dbms_output.put_line('Wonderfull!!!');
+	when grade = 'B' then dbms_output.put_line('Good Job!!! Can do better');
+	when grade = 'C' then dbms_output.put_line('Just Passed!! DO Some Hard Work');
+	when grade = 'F' then dbms_output.put_line('Better Luck Next Time');
+	else 
+	dbms_output.put_line('Invalid Grade');
+	
+
+end case;
+
+
+
+end;
+/
+
+// LOOPING STATEMENTS 
+
+basic loop
+while loop
+for loop
+
+int i=1;
+while(i<10)
+{
+	//code
+	i=i+1;
+}
+
+
+
+
+BASIC LOOP
+
+declare
+	
+	i number(2) := 1;
+begin
+
+	loop
+		dbms_output.put_line('hello'||i);
+		i:=i+1;		
+		if (i>10) then
+			exit;
+		end if;
+		
+	end loop;
+
+	dbms_output.put_line('after loop');
+	
+
+end;
+/
+
+
+WHILE LOOP
+
+
+declare
+	a number(2):=1;
+begin
+	while (a<=10) loop		
+		dbms_output.put_line('num '||a);
+		a:=a+1;
+	end loop;
+
+end;
+/
+
+
+FOR LOOP
+
+
+declare
+	a number(2);
+begin
+
+	for a in reverse 1..10 loop
+		dbms_output.put_line('num '||a);
+	end loop;
+
+end;
+/
+
+
+ARRAY 
+
+
+String names=new String[5]
+
+
+type stringfiveeles is varray(5) of varchar2(20);
+
+names stringfiveeles;
+
+planets stringfiveeles;
+
+
+declare
+
+	type strFiveEles is varray(5) of varchar2(20);
+	avengers strFiveEles;
+	
+begin
+
+	avengers := strFiveEles('Thor','Ironman','Hulk','Captain','Hawkeye');
+	for i in 1..avengers.count loop
+		dbms_output.put_line(avengers(i));
+	end loop;
+
+end;
+/
+
+
+CURSOR - context pointer
+
+begin
+update employees
+set city='Hyderabad'
+where id = 10;
+
+if sql%notfound = true then
+	dbms_output.put_line('the record you are trying to update was not found');
+else
+	dbms_output.put_line(sql%rowcount||' rows got updated');
+end if;
+
+--dbms_output.put_line(sys.diutil.bool_to_int(sql%found));
+--dbms_output.put_line(sys.diutil.bool_to_int(sql%notfound));
+--dbms_output.put_line(sql%rowcount);
+
+
+delete from employees
+
+sql%found
+
+end;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+

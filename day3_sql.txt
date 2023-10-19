@@ -1,0 +1,311 @@
+create table departments(
+id number(10) primary key,
+name varchar2(30) not null unique,
+created_at date default sysdate
+);
+
+create table employees(
+id number(10) primary key,
+name varchar2(30) not null,
+city varchar2(30) not null,
+email varchar2(30) not null unique,
+salary number(10) not null,
+did number(10),
+foreign key(did) references departments(id),
+created_at date default sysdate
+);
+
+create sequence emp_seq
+start with 1
+increment by 1;
+
+create sequence dept_seq
+start with 1
+increment by 1;
+
+insert into departments(id,name) values (dept_seq.nextval,'HR');
+
+insert into employees(id,name,city,email,salary,did)
+  values(emp_seq.nextval,'Rohit','pune','rohit@gmail.com',34000,1);
+
+ insert into employees(id,name,city,email,salary,did)
+  values(emp_seq.nextval,'Jayesh','pune','jayesh@gmail.com',30000,3);
+
+insert into employees(id,name,city,email,salary,did)
+  values(emp_seq.nextval,'Ajay','pune','ajay@gmail.com',40000,2);
+
+insert into employees(id,name,city,email,salary,did) 
+values(emp_seq.nextval,'pratik','akola','pratik@gmail.com',35000,null);
+
+insert into employees(id,name,city,email,salary,did) 
+values(emp_seq.nextval,'omkar','akluj','omkar@gmail.com',30000,7);
+
+
+# inner join
+------------
+Syntax:-
+
+select columns/* from
+[table1/left table] inner join [table2/right table]
+on table1.column = table2.column   ********//relation between 2 tables//*******
+
+select d.name,e.name,city,salary from 
+departments d inner join employees e
+on d.id = e.did;
+
+# OUTER JOIN:-
+-------------
+
+1.left join :-
+---------------
+
+syntax:- 
+select columns/* from
+[table1/left table] left join [table2/right table]
+on table1.column = table2.column   ********//relation between 2 tables//*******
+
+select d.name,e.name,city,salary from 
+departments d left join employees e
+on d.id = e.did;
+
+
+2.right join:-
+---------------
+
+syntax:- 
+select columns/* from
+[table1/left table] right join [table2/right table]
+on table1.column = table2.column   ********//relation between 2 tables//******
+
+select d.name,e.name,city,salary from 
+departments d right join employees e
+on d.id = e.did;
+
+3.full join:-
+--------------
+
+syntax:- 
+select columns/* from
+[table1/left table] full join [table2/right table]
+on table1.column = table2.column   ********//relation between 2 tables//*******
+
+select d.name,e.name,city,salary from 
+departments d full join employees e
+on d.id = e.did;
+
+
+# Equi join:-
+--------------
+select d.id,d.name,e.name,e.salary from
+departments d,employees e
+where d.id = e.did;
+
+create table bank_details(
+id number(10) primary key,
+ac_no number(30) not null unique,
+ifsc varchar2(20) not null,
+branch varchar2(20) not null,
+eid number(10),
+foreign key(eid) references employees(id),
+created_at date default sysdate
+);
+
+create sequence bank_seq
+start with 1
+increment by 1;
+
+insert into bank_details(id,ac_no,ifsc,branch,eid) 
+values(bank_seq.nextval,200123456,'bankifsc1','kothrud',1);
+
+insert into bank_details(id,ac_no,ifsc,branch,eid) 
+values(bank_seq.nextval,200123446,'bankifsc2','karvenagar',2);
+
+insert into bank_details(id,ac_no,ifsc,branch,eid) 
+values(bank_seq.nextval,200123475,'bankifsc3','baner',3);
+
+insert into bank_details(id,ac_no,ifsc,branch,eid) 
+values(bank_seq.nextval,200123457,'bankifsc4','warje',4);
+
+insert into bank_details(id,ac_no,ifsc,branch,eid) 
+values(bank_seq.nextval,2001232134,'bankifsc5','pimpri',5);
+
+insert into bank_details(id,ac_no,ifsc,branch,eid) 
+values(bank_seq.nextval,200123499,'bankifs6c','aaudh',6);
+
+
+select d.name,e.name,salary,bd.ac_no,bd.branch from
+departments d,employees e,bank_details bd
+where d.id=e.did
+and e.id=bd.eid
+order by e.salary desc;
+
+
+
+
+create table users(
+id number(10) primary key,
+name varchar2(30) not null,
+username varchar2(20) not null unique,
+password varchar2(10) not null,
+bio varchar2(30),
+link varchar2(30),
+type varchar2(10) default 'public',  
+created_at date default sysdate
+);
+
+create sequence users_seq
+start with 1
+increment by 1;
+
+insert into users(id,name,username,password,bio,link,type)
+values(users_seq.nextval,'ajay shedge','ajay4028','123456','hey','insta.link','public');
+
+insert into users(id,name,username,password,bio,link,type)
+values(users_seq.nextval,'lokesh chaudhari','lokesh1415','110901',null,null,null);
+
+insert into users(id,name,username,password,bio,link,type)
+values(users_seq.nextval,'pratik kale','pratik11','121212',null,null,'public');
+
+insert into users(id,name,username,password,bio,link,type)
+values(users_seq.nextval,'sairaj ','sai@123','1011011','namaste',null,'public');
+
+
+create table posts(
+id number(10) primary key,
+caption varchar2(30),
+media varchar2(20),
+type varchar2(30) default 'image',
+user_id number(20),
+foreign key(user_id) references users(id),
+created_at date default sysdate
+);
+
+
+create sequence posts_seq
+start with 1
+increment by 1;
+
+insert into posts(id,caption,media,type,user_id)
+values(posts_seq.nextval,'Hello there..!!','IMAGE','public',1);
+
+insert into posts(id,caption,media,type,user_id)
+values(posts_seq.nextval,'Watch..!!','VIDEO','public',1);
+
+insert into posts(id,caption,media,type,user_id)
+values(posts_seq.nextval,null,'IMAGE','public',2);
+
+insert into posts(id,caption,media,type,user_id)
+values(posts_seq.nextval,null,'IMAGE AND VIDEO','private',3);
+
+insert into posts(id,caption,media,type,user_id)
+values(posts_seq.nextval,'Hello','IMAGE','public',4);
+
+insert into posts(id,caption,media,type,user_id)
+values(posts_seq.nextval,null,'IMAGE',null,5);
+
+insert into posts(id,caption,media,type,user_id)
+values(posts_seq.nextval,null,'REEL',null,3);
+
+create table comments(
+id number(10) primary key,
+user_id number(20),
+posts_id number(20),
+foreign key(user_id) references users(id),
+foreign key(posts_id) references posts(id),
+message varchar2(30),
+created_at date default sysdate
+);
+
+create sequence comments_seq
+start with 1
+increment by 1;
+
+insert into comments(id,user_id,posts_id,message) 
+values(comments_seq.nextval,2,1,'very nice');
+
+
+
+queries:-
+-------------
+1.
+	select u.username,u.id as,c.user_id,message from
+	users u,comments c
+	where u.id=c.user_id
+	and username='lokesh1415'; 
+
+2.
+	select u.username,u.id as user_id,p.id as post_id,c.message from
+	users u,posts p,comments c
+	where u.id=p.user_id
+	and p.id=c.posts_id
+	and username='ajay4028';
+
+3.	
+	select u.id,username,c.message,c.posts_id from
+	users u,posts p,comments c
+	where u.id=c.user_id
+	and p.id=c.posts_id
+	and username='lokesh1415';
+
+1.
+
+select u.name,p.caption,c.message from 
+users u,posts p,comments c
+where u.id=c.usid
+and p.id=c.pid
+and p.id=(
+select p1.id from 
+users u1,posts p1 
+where u1.id=p1.usid
+and u1.username='kkul'
+offset 1 rows fetch next 1 rows only	
+);
+
+
+
+assignment:-
+--------------
+1.
+
+	select u.id as user_id,c.message,c.posts_id from
+  	users u,posts p,comments c
+  	where u.id=p.user_id
+    	and p.id=c.posts_id
+    	and username='ajay4028';
+
+or
+	select u.name,p.caption,c.message from 
+	users u,posts p,comments c
+	where u.id=c.user_id
+	and p.id=c.posts_id
+	and p.id=(
+	select p1.id from 
+	users u1,posts p1 
+	where u1.id=p1.user_id
+	and u1.username='ajay4028'
+	fetch next 1 rows only	
+	);
+
+2. 
+	select c.user_id,c.message from
+	users u,posts p,comments c
+	where u.id=c.user_id
+	and p.id=c.posts_id
+	and trunc(p.created_at)='16-Oct-2023';
+
+3.
+
+	select username from users where trunc(created_at)='16-Oct-2023';
+	
+4. 
+	select u.username,p.caption from 
+	users u,posts p
+	where u.id=p.user_id
+	and username='pratik11'
+	;
+
+5.
+	select u.id as user_id,u.name,p.id,c.message from
+	users u,posts p,comments c
+	where p.id=c.posts_id
+	and p.id=c.user_id;

@@ -1,0 +1,114 @@
+pl /sql
+
+programs
+
+1] arithmetic operation
+------------------------------------
+declare 
+
+num1 number(2) := &num1;
+num1 number(2) := &num2;
+sum number(10);
+sub number(10);
+multi number(10);
+div number(10);
+
+begin
+
+sum := num1+num2;
+sub := num1-num2;
+multi := num1*num2;
+div := num1/num2;
+
+dbms_output.put_line('the addition is '||sum);
+dbms_output.put_line('The substraction is '||sub);
+dbms_output.put_line('The Multiplication is ' ||multi);
+dbms_output.put_line('The division is '||div);
+
+end;
+/
+
+2] data from table
+--------------------------------------
+declare
+
+vname employees.name%type;
+vcity employees.city%type;
+vemail employees.email%type;
+vsal employees.salary%type;
+annual_salary number(10);
+
+begin
+
+select name,city,email,salary into vname,vcity,vemail,vsal from employees where id=3;
+
+annual_salary := vsal * 12;
+
+dbms_output.put_line('the name is '||vname);
+dbms_output.put_line('the city is '||vcity);
+dbms_output.put_line('the email is '||vemail);
+dbms_output.put_line('the salary is '||vsal);
+dbms_output.put_line('the annual salary is '||annual_salary);
+
+end;
+/
+
+
+3] condition statements 
+----------------------------------------
+
+declare
+salary number(10) := &salary;
+
+begin 
+
+if(salary >=100000) then
+	dbms_output.put_line('you have to pay 25 % tax and the tax amount is:- '||salary/100*25);
+
+elsif(salary >=60000 and salary< 100000) then
+	dbms_output.put_line('you have to pay 15 % tax and the tax amount is:- '||salary/100*15);
+
+elsif(salary >=40000 and salary < 60000) then
+	dbms_output.put_line('you have to pay 8 % tax and the tax amount is:- '||salary/100*8);
+
+end if;
+
+end;
+/
+
+4]loops
+-----------------------------------
+declare
+num number(2) := &num;
+i number(2)  :=1;
+
+begin
+	loop
+		dbms_output.put_line(num*i);
+		i:=i+1;
+		if(i>10) then
+			exit;
+		end if;
+	end loop;	
+end;
+/
+
+5]arrays
+-----------------------------------
+
+declare
+	type numFiveEles is varray(5) of number(2);
+	num numFiveEles;
+	sum number(2):= 0;
+begin
+	num := numFiveEles(1,3,4,5,7);
+
+	for i in 1..num.count loop
+
+		sum :=num(i)+sum;	
+
+	end loop;
+	dbms_output.put_line(sum);
+
+end;
+/

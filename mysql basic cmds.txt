@@ -1,0 +1,545 @@
+
+SQL*Plus: Release 12.2.0.1.0 Production on Tue Oct 10 12:22:14 2023
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+Enter user-name: sys / as sysdba
+Enter password:
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
+
+SQL> select name from v$database;
+
+NAME
+---------
+ORCL
+
+SQL> show user
+USER is "SYS"
+SQL> select username from dba_users;
+
+USERNAME
+--------------------------------------------------------------------------------
+SYS
+SYSTEM
+XS$NULL
+OJVMSYS
+LBACSYS
+OUTLN
+SYS$UMF
+DBSNMP
+APPQOSSYS
+DBSFWUSER
+GGSYS
+
+USERNAME
+--------------------------------------------------------------------------------
+ANONYMOUS
+HR
+CTXSYS
+SI_INFORMTN_SCHEMA
+DVSYS
+DVF
+GSMADMIN_INTERNAL
+ORDPLUGINS
+MDSYS
+OLAPSYS
+ORDDATA
+
+USERNAME
+--------------------------------------------------------------------------------
+XDB
+WMSYS
+ORDSYS
+GSMCATUSER
+MDDATA
+SYSBACKUP
+REMOTE_SCHEDULER_AGENT
+GSMUSER
+SYSRAC
+AUDSYS
+DIP
+
+USERNAME
+--------------------------------------------------------------------------------
+SYSKM
+ORACLE_OCM
+SYSDG
+SPATIAL_CSW_ADMIN_USR
+
+37 rows selected.
+
+SQL> show user
+USER is "SYS"
+SQL> conn hr/hr
+Connected.
+SQL> show user
+USER is "HR"
+SQL> select * from tab;
+
+TNAME
+--------------------------------------------------------------------------------
+TABTYPE  CLUSTERID
+------- ----------
+COUNTRIES
+TABLE
+
+DEPARTMENTS
+TABLE
+
+EMPLOYEES
+TABLE
+
+
+TNAME
+--------------------------------------------------------------------------------
+TABTYPE  CLUSTERID
+------- ----------
+EMP_DETAILS_VIEW
+VIEW
+
+JOBS
+TABLE
+
+JOB_HISTORY
+TABLE
+
+
+TNAME
+--------------------------------------------------------------------------------
+TABTYPE  CLUSTERID
+------- ----------
+LOCATIONS
+TABLE
+
+REGIONS
+TABLE
+
+
+8 rows selected.
+
+SQL> set linesize 150
+SQL> /
+
+TNAME
+                 TABTYPE  CLUSTERID
+-------------------------------------------------------------------------------------------------------------------------------- ------- ----------
+COUNTRIES
+                 TABLE
+DEPARTMENTS
+                 TABLE
+EMPLOYEES
+                 TABLE
+EMP_DETAILS_VIEW
+                 VIEW
+JOBS
+                 TABLE
+JOB_HISTORY
+                 TABLE
+LOCATIONS
+                 TABLE
+REGIONS
+                 TABLE
+
+8 rows selected.
+
+SQL> col tname for a30
+SQL> /
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+COUNTRIES                      TABLE
+DEPARTMENTS                    TABLE
+EMPLOYEES                      TABLE
+EMP_DETAILS_VIEW               VIEW
+JOBS                           TABLE
+JOB_HISTORY                    TABLE
+LOCATIONS                      TABLE
+REGIONS                        TABLE
+
+8 rows selected.
+
+SQL> select * from departments;
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID
+------------- ------------------------------ ---------- -----------
+           10 Administration                        200        1700
+           20 Marketing                             201        1800
+           30 Purchasing                            114        1700
+           40 Human Resources                       203        2400
+           50 Shipping                              121        1500
+           60 IT                                    103        1400
+           70 Public Relations                      204        2700
+           80 Sales                                 145        2500
+           90 Executive                             100        1700
+          100 Finance                               108        1700
+          110 Accounting                            205        1700
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID
+------------- ------------------------------ ---------- -----------
+          120 Treasury                                         1700
+          130 Corporate Tax                                    1700
+          140 Control And Credit                               1700
+          150 Shareholder Services                             1700
+          160 Benefits                                         1700
+          170 Manufacturing                                    1700
+          180 Construction                                     1700
+          190 Contracting                                      1700
+          200 Operations                                       1700
+          210 IT Support                                       1700
+          220 NOC                                              1700
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID
+------------- ------------------------------ ---------- -----------
+          230 IT Helpdesk                                      1700
+          240 Government Sales                                 1700
+          250 Retail Sales                                     1700
+          260 Recruiting                                       1700
+          270 Payroll                                          1700
+
+27 rows selected.
+
+SQL> select * from departments
+  2  where department_id in(10,60);
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID
+------------- ------------------------------ ---------- -----------
+           10 Administration                        200        1700
+           60 IT                                    103        1400
+
+SQL> show user
+USER is "HR"
+SQL> conn sys/as sysdba
+Enter password:
+Connected.
+SQL> show user
+USER is "SYS"
+SQL> select username,default_tablespace,temporary_tablespace from dba_users;
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+SYS
+SYSTEM                         TEMP
+
+SYSTEM
+SYSTEM                         TEMP
+
+XS$NULL
+SYSTEM                         TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+OJVMSYS
+SYSTEM                         TEMP
+
+LBACSYS
+SYSTEM                         TEMP
+
+OUTLN
+SYSTEM                         TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+SYS$UMF
+SYSTEM                         TEMP
+
+DBSNMP
+SYSAUX                         TEMP
+
+APPQOSSYS
+SYSAUX                         TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+DBSFWUSER
+SYSAUX                         TEMP
+
+GGSYS
+SYSAUX                         TEMP
+
+ANONYMOUS
+SYSAUX                         TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+HR
+SYSAUX                         TEMP
+
+CTXSYS
+SYSAUX                         TEMP
+
+SI_INFORMTN_SCHEMA
+SYSAUX                         TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+DVSYS
+SYSAUX                         TEMP
+
+DVF
+SYSAUX                         TEMP
+
+GSMADMIN_INTERNAL
+SYSAUX                         TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+ORDPLUGINS
+SYSAUX                         TEMP
+
+MDSYS
+SYSAUX                         TEMP
+
+OLAPSYS
+SYSAUX                         TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+ORDDATA
+SYSAUX                         TEMP
+
+XDB
+SYSAUX                         TEMP
+
+WMSYS
+SYSAUX                         TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+ORDSYS
+SYSAUX                         TEMP
+
+GSMCATUSER
+USERS                          TEMP
+
+MDDATA
+USERS                          TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+SYSBACKUP
+USERS                          TEMP
+
+REMOTE_SCHEDULER_AGENT
+USERS                          TEMP
+
+GSMUSER
+USERS                          TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+SYSRAC
+USERS                          TEMP
+
+AUDSYS
+USERS                          TEMP
+
+DIP
+USERS                          TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+SYSKM
+USERS                          TEMP
+
+ORACLE_OCM
+USERS                          TEMP
+
+SYSDG
+USERS                          TEMP
+
+
+USERNAME
+--------------------------------------------------------------------------------------------------------------------------------
+DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------------ ------------------------------
+SPATIAL_CSW_ADMIN_USR
+USERS                          TEMP
+
+
+37 rows selected.
+
+SQL> col username for a25;
+SQL> conn sys /as sysdba
+Enter password:
+Connected.
+SQL> show user
+USER is "SYS"
+SQL> select username,default_tablespace,temporary_tablespace from dba_users;
+
+USERNAME                  DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------- ------------------------------ ------------------------------
+SYS                       SYSTEM                         TEMP
+SYSTEM                    SYSTEM                         TEMP
+XS$NULL                   SYSTEM                         TEMP
+OJVMSYS                   SYSTEM                         TEMP
+LBACSYS                   SYSTEM                         TEMP
+OUTLN                     SYSTEM                         TEMP
+SYS$UMF                   SYSTEM                         TEMP
+DBSNMP                    SYSAUX                         TEMP
+APPQOSSYS                 SYSAUX                         TEMP
+DBSFWUSER                 SYSAUX                         TEMP
+GGSYS                     SYSAUX                         TEMP
+
+USERNAME                  DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------- ------------------------------ ------------------------------
+ANONYMOUS                 SYSAUX                         TEMP
+HR                        SYSAUX                         TEMP
+CTXSYS                    SYSAUX                         TEMP
+SI_INFORMTN_SCHEMA        SYSAUX                         TEMP
+DVSYS                     SYSAUX                         TEMP
+DVF                       SYSAUX                         TEMP
+GSMADMIN_INTERNAL         SYSAUX                         TEMP
+ORDPLUGINS                SYSAUX                         TEMP
+MDSYS                     SYSAUX                         TEMP
+OLAPSYS                   SYSAUX                         TEMP
+ORDDATA                   SYSAUX                         TEMP
+
+USERNAME                  DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------- ------------------------------ ------------------------------
+XDB                       SYSAUX                         TEMP
+WMSYS                     SYSAUX                         TEMP
+ORDSYS                    SYSAUX                         TEMP
+GSMCATUSER                USERS                          TEMP
+MDDATA                    USERS                          TEMP
+SYSBACKUP                 USERS                          TEMP
+REMOTE_SCHEDULER_AGENT    USERS                          TEMP
+GSMUSER                   USERS                          TEMP
+SYSRAC                    USERS                          TEMP
+AUDSYS                    USERS                          TEMP
+DIP                       USERS                          TEMP
+
+USERNAME                  DEFAULT_TABLESPACE             TEMPORARY_TABLESPACE
+------------------------- ------------------------------ ------------------------------
+SYSKM                     USERS                          TEMP
+ORACLE_OCM                USERS                          TEMP
+SYSDG                     USERS                          TEMP
+SPATIAL_CSW_ADMIN_USR     USERS                          TEMP
+
+37 rows selected.
+
+SQL> col username for a25;
+SQL> show user
+USER is "SYS"
+SQL> create user user498 identified by tiger
+  2  default tablespace users
+  3  temporary tablespace temp
+  4  quota 3M on users;
+
+User created.
+
+SQL> grant connect,create session to user498;
+
+Grant succeeded.
+
+SQL> select username from dba_users;
+
+USERNAME
+-------------------------
+SYS
+SYSTEM
+XS$NULL
+OJVMSYS
+LBACSYS
+OUTLN
+SYS$UMF
+DBSNMP
+APPQOSSYS
+DBSFWUSER
+GGSYS
+
+USERNAME
+-------------------------
+ANONYMOUS
+HR
+CTXSYS
+SI_INFORMTN_SCHEMA
+DVSYS
+DVF
+GSMADMIN_INTERNAL
+ORDPLUGINS
+MDSYS
+OLAPSYS
+ORDDATA
+
+USERNAME
+-------------------------
+XDB
+WMSYS
+ORDSYS
+GSMCATUSER
+MDDATA
+SYSBACKUP
+REMOTE_SCHEDULER_AGENT
+GSMUSER
+SYSRAC
+AUDSYS
+DIP
+
+USERNAME
+-------------------------
+SYSKM
+ORACLE_OCM
+SYSDG
+SPATIAL_CSW_ADMIN_USR
+USER498
+
+38 rows selected.
+
+SQL> conn user498/tiger
+Connected.
+SQL> show user
+USER is "USER498"
+SQL> select * from tab;
+
+no rows selected
+
+SQL> show user
+USER is "USER498"
+SQL> create table DEPT
+  2  (DEPTNO NUMBER(2) CONSTRAINT PK_DEPT PRIMARY KEY,
+  3  DNAME VARCHAR2(14),
+  4  LOC VARCHAR2(13) );
+create table DEPT
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges
+
+
+SQL>
